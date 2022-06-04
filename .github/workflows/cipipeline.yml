@@ -39,20 +39,7 @@ jobs:
           pylint tests --disable=missing-docstring
 
       - name: SonarCloud Scan
-<<<<<<< HEAD
         uses: SonarSource/sonarcloud-github-action@v1.3
-=======
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.organization=hatemstartups-1
-            -Dsonar.projectKey=sample-python-ghactions
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.sources=app/
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
-            -Dsonar.verbose=true
->>>>>>> 05a99c4b799e5a6004559802bb217efb93fbab29
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
