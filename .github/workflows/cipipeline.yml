@@ -42,7 +42,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           args: >
-            -Dsonar.organization=hatemstartups
+            -Dsonar.organization=hatemstartups-1
             -Dsonar.projectKey=sample-python-ghactions
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=app/
