@@ -43,7 +43,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=hatemstartups-1
-            -Dsonar.projectKey=hatemstartups-1
+            -Dsonar.projectKey=sample-python-ghactions
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=app/
             -Dsonar.test.exclusions=tests/**
