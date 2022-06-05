@@ -16,18 +16,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          # Fetch all commits
-          fetch-depth: 0
-      - name: Synk Code Test SAST
-        uses: snyk/actions/setup@master
-        continue-on-error: false
-        run: snyk code test --sarif > snyk_sarif
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN}}
-      - name: Upload results to Github Code Scanning
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: snyk_sarif
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
+
+      # If this run was triggered by a pull request event, then checkout
+      # the head of the pull request instead of the merge commit.
+      - run: git checkout HEAD^2
+        if: ${{ github.event_name == 'pull_request' }}
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+
+      # Override language selection by uncommenting this and choosing your languages
+      # with:
+      #   languages: go, javascript, csharp, python, cpp, java
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
@@ -53,6 +59,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Snyk SAST
+        uses: snyk/actions/setup@master
+      - name: Snyk Code Test
+        continue-on-error: true
+        run: snyk code test --sarif > snyk_sarif
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN}}
+      - name: Upload results to Github Code Scanning
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+            sarif_file: snyk_sarif
 
       - name: Semantic versioning
         id: versioning
