@@ -7,7 +7,7 @@ from app import routers
 
 service = FastAPI(
     title="fast api example",
-    description="Example Python API V1.",
+    description="Example Python API V2.",
     version="v1",
 )
 
